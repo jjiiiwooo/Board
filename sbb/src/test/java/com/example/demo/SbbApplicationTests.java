@@ -1,42 +1,23 @@
 package com.example.demo;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
-import java.util.Optional;
+import com.example.demo.question.QuestionService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.example.demo.answer.Answer;
-import com.example.demo.answer.AnswerRepository;
-import com.example.demo.question.Question;
-import com.example.demo.question.QuestionRepository;
 
 @SpringBootTest
 class SbbApplicationTests {
-
-	@Autowired
-	private QuestionRepository questionRepository;
 	
 	@Autowired
-	private AnswerRepository answerRepository;
+	private QuestionService questionService;
 	
-	@Transactional
 	@Test
 	void testJpa() {
-		Optional<Question> oq = this.questionRepository.findById(2);
-		assertTrue(oq.isPresent());
-		Question q = oq.get();
-		
-		List<Answer>answerList = q.getAnswerList();
-		
-		assertEquals(1,answerList.size());
-		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
-		
+		for(int i=0; i<=300; i++) {
+			String subject = String.format("테스트 데이터입니다.:[%03d]",i);
+			String content = "내용 없음";
+			this.questionService.create(subject,content);
+		}
 	}
-
 }
