@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.time.LocalDateTime;
 
 import com.example.demo.DataNotFoundException;
+import com.example.demo.user.SiteUser;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -37,12 +38,26 @@ public class QuestionService {
 		
 	}
 	
-	public void create(String subject, String content) {
+	public void create(String subject, String content, SiteUser user) {
 		Question q = new Question();
 		q.setSubject(subject);
 		q.setContent(content);
 		q.setCreateDate(LocalDateTime.now());
+		q.setAuthor(user);
 		this.questionRepository.save(q);
+	}
+	
+	//질문 수정 처리
+	public void modify(Question question, String subject, String content) {
+		question.setSubject(subject);
+		question.setContent(content);
+		question.setModifyDate(LocalDateTime.now());
+		this.questionRepository.save(question);
+	}
+	
+	//질문 삭제 처리
+	public void delete(Question question) {
+		this.questionRepository.delete(question);
 	}
 	
 	
